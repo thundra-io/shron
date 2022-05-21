@@ -1,0 +1,42 @@
+{
+  "name": "shron",
+  "version": "0.0.1",
+  "description": "Serverless Chronometer",
+  "author": "Serkan Özal <serkanozal86@gmail.com> (https://github.com/serkan-ozal)",
+  "homepage": "https://github.com/serkan-ozal/shron",
+  "repository": "serkan-ozal/shron",
+  "keywords": [
+    "serverless",
+    "aws",
+    "lambda",
+    "performance",
+    "monitoring",
+    "tracing"
+  ],
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prepublish": "tsc",
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "example": "ts-node examples/example.ts",
+    "release-patch": "release-it --ci --git.commit --git.push --git.tag --git.tagName='v${version}' --github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks",
+    "release-minor": "release-it minor --ci --git.commit --git.push --git.tag --git.tagName='v${version}' --github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks",
+    "release-major": "release-it major --ci --git.commit --git.push --git.tag --git.tagName='v${version}' --github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks",
+    "release-minor-without-tag": "release-it minor --ci --no-git.commit --no-git.push --no-git.tag --no-git.tagName='v${version}' --no-github.release --no-git.requireCleanWorkingDir --no-git.requireUpstream --npm.publish --npm.skipChecks"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.36",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4",
+    "release-it": "^14.5.0"
+  }
+}
