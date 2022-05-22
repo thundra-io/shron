@@ -1,7 +1,8 @@
 export type ShronOpts = {
+    name?: string,
     async?: boolean,
     cb?: (result: ShronResult) => any;
-};
+}
 
 export type ShronResult = {
     readonly type: string;
@@ -13,11 +14,11 @@ export type ShronResult = {
     readonly startTime: number;
     readonly duration: number;
     readonly durationHighRes: number;
-};
+}
 
 const defaultCallback = (result: ShronResult) => {
     console.log(JSON.stringify(result));
-};
+}
 
 const createResult = (name: string, startTime: number, passedTime: number[]): ShronResult => {
     const delay: number = passedTime[0] * 1000 + passedTime[1] / 1e6;
@@ -39,6 +40,7 @@ export function Shron(opts?: ShronOpts): any {
     return function (_target: Object, propertyKey: string, descriptor: PropertyDescriptor): PropertyDescriptor {
         let thisFunc: object;
         const method = descriptor.value;
+        const name = opts?.name || propertyKey;
         if (opts?.async) {
             descriptor.value = async function (...args: any[]) {
                 if (!thisFunc) {
@@ -48,7 +50,7 @@ export function Shron(opts?: ShronOpts): any {
                 const startTimeHR = process.hrtime();
                 const result: any = await method.apply(this, args);
                 const passedTime = process.hrtime(startTimeHR);
-                const shronResult: ShronResult = createResult(propertyKey, startTime, passedTime);
+                const shronResult: ShronResult = createResult(name, startTime, passedTime);
                 callback.apply(thisFunc, [shronResult]);
                 return result;
             }
@@ -61,7 +63,7 @@ export function Shron(opts?: ShronOpts): any {
                 const startTimeHR = process.hrtime();
                 const result: any = method.apply(this, args);
                 const passedTime = process.hrtime(startTimeHR);
-                const shronResult: ShronResult = createResult(propertyKey, startTime, passedTime);
+                const shronResult: ShronResult = createResult(name, startTime, passedTime);
                 callback.apply(thisFunc, [shronResult]);
                 return result;
             }
